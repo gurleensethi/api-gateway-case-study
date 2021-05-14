@@ -11,8 +11,8 @@ async function bootstrap() {
   logger.info("Creating redis client...");
 
   const redisClient: RedisClient = redis.createClient({
-    host: "localhost",
-    port: 6379,
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT),
   });
   const gateway = new Gateway(redisClient);
   const app = express();
@@ -28,6 +28,4 @@ async function bootstrap() {
   });
 }
 
-bootstrap().then(() => {
-  import("../service/implementations/hello-service");
-});
+bootstrap();
