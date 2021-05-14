@@ -26,3 +26,7 @@ There is no hard and fast rule for the features that an API Gateway should suppo
 - `Heartbeat`: Services have a hearbeat mechanism to denote if they are still available.
 
 - `Dynamic Service Registration`: Services can register themselves dynamically without the need of restarting gateway server itself.
+
+## Routing
+
+One benefit of an API Gateway is that the internal services can communicate with each other using any protocol required, regarless of how the client has connected to the Gateway.
