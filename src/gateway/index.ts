@@ -3,7 +3,6 @@ import express from "express";
 import logger from "../common/logger";
 import { Gateway } from "./gateway";
 import redis, { RedisClient } from "redis";
-import { promisify } from "util";
 
 // Load environment variables from ".env"
 config();
@@ -29,4 +28,6 @@ async function bootstrap() {
   });
 }
 
-bootstrap();
+bootstrap().then(() => {
+  import("../service/implementations/hello-service");
+});

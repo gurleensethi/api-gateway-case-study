@@ -26,7 +26,7 @@ export class Gateway {
 
     // Check if service exists in the global cache.
     const serviceMetadata: ServiceMetadata | undefined = (await asyncHGETALL(
-      serviceName
+      `service:${serviceName}`
     )) as ServiceMetadata;
 
     if (!serviceMetadata) {
