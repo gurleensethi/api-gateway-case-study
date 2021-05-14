@@ -2,7 +2,7 @@
 
 An implementation of the concept of `API Gateway` in `Node.js`.
 
-**⚠️ Note: Not intended to be used in production.**
+**⚠️ Note: Not to be used in production! This is just [me](https://github.com/gurleensethi) messing around with code.**
 
 ## Recommended reading on API Gateway
 
