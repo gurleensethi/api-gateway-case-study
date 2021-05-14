@@ -30,3 +30,9 @@ There is no hard and fast rule for the features that an API Gateway should suppo
 ## Routing
 
 One benefit of an API Gateway is that the internal services can communicate with each other using any protocol required, regarless of how the client has connected to the Gateway.
+
+![gateway_communication_protocol](https://raw.githubusercontent.com/gurleensethi/api-gateway-case-study/main/images/gateway_communication_protocol.png)
+
+Protocols used for routing (from gateway to service) in this case study:
+
+- **http**
