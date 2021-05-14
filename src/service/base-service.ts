@@ -1,14 +1,13 @@
 import { RedisClient } from "redis";
-import { promisify } from "util";
 import logger from "../common/logger";
-import { CommunicationProtocol } from "../common/types";
+import { ServiceMetadata } from "../common/types";
 
 export class BaseService {
   private heartbeatInterval: number | undefined;
   private isServiceRunning: boolean = false;
 
   constructor(
-    private config: { name: string; protocol: CommunicationProtocol },
+    private config: ServiceMetadata,
     private redisClient: RedisClient
   ) {}
 
@@ -25,7 +24,11 @@ export class BaseService {
       this.config.name,
       "protocol",
       this.config.protocol,
-      (err) => {
+      "host",
+      this.config.host,
+      "port",
+      this.config.port,
+      () => {
         this.redisClient.expire(`service:${this.config.name}`, 12);
       }
     );

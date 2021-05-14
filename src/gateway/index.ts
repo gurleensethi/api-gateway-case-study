@@ -3,6 +3,7 @@ import express from "express";
 import logger from "../common/logger";
 import { Gateway } from "./gateway";
 import redis, { RedisClient } from "redis";
+import bodyParser from "body-parser";
 
 // Load environment variables from ".env"
 config();
@@ -16,6 +17,8 @@ async function bootstrap() {
   });
   const gateway = new Gateway(redisClient);
   const app = express();
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
   const httpPort = process.env.HTTP_PORT;
 
   // Direct all requests to gateway

@@ -25,4 +25,4 @@ There is no hard and fast rule for the features that an API Gateway should suppo
 
 - `Heartbeat`: Services have a hearbeat mechanism to denote if they are still available.
 
-- `Dynamic Service Registration`: Services can register themselves dynamicall without the need of restarting gateway server itself.
+- `Dynamic Service Registration`: Services can register themselves dynamically without the need of restarting gateway server itself.

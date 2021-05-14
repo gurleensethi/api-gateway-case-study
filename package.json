@@ -5,7 +5,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "start:gateway": "node dist/gateway/index.js",
+    "start:hello-service": "node dist/service/implementations/hello-service.js",
     "dev:gateway": "tsc-watch --onSuccess 'npm run start:gateway'",
+    "dev:hello-service": "tsc-watch --onSuccess 'npm run start:hello-service'",
     "build": "tsc"
   },
   "author": "",
@@ -13,6 +15,7 @@
   "dependencies": {
     "@types/express": "^4.17.11",
     "@types/redis": "^2.8.28",
+    "body-parser": "^1.19.0",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "redis": "^3.1.2",
