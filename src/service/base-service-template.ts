@@ -1,19 +1,18 @@
 import { RedisClient } from "redis";
 import logger from "../common/logger";
-import { Application } from "express";
-import { CommunicationProtocol, ServiceConfig } from "../common/types";
-import express from "express";
+import { ServiceConfig } from "../common/types";
 
-export class BaseService {
+export abstract class BaseServiceTemplate<T extends ServiceConfig> {
   private heartbeatInterval: number | undefined;
   private isServiceRunning: boolean = false;
   private redisServiceMetadata: string[] = [];
-  private expressApp?: Application;
 
-  constructor(private config: ServiceConfig, private redisClient: RedisClient) {
+  constructor(private config: T, private redisClient: RedisClient) {
     this.generateServiceMetadataForRedis();
-    this.init();
+    this.initService(config);
   }
+
+  public abstract initService(config: T): Promise<void> | void;
 
   private generateServiceMetadataForRedis() {
     this.redisServiceMetadata = Object.keys(this.config).reduce<string[]>(
@@ -35,23 +34,6 @@ export class BaseService {
       },
       []
     );
-  }
-
-  private async init() {
-    switch (this.config.protocol) {
-      case CommunicationProtocol.HTTP: {
-        const { port, configApp, name } = this.config;
-
-        this.expressApp = express();
-        await this.config.configApp(this.expressApp);
-        this.expressApp.listen(Number(this.config.port), () => {
-          logger.info(`[${name}] is listening via 'http' on port ${port}...`);
-        });
-        break;
-      }
-      case CommunicationProtocol.REDIS_QUEUE: {
-      }
-    }
   }
 
   /**

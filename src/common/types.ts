@@ -17,9 +17,13 @@ export type ServiceMetadata =
       protocol: CommunicationProtocol.REDIS_QUEUE;
     };
 
-export type ServiceConfig =
-  | (ServiceMetadata & {
-      protocol: CommunicationProtocol.HTTP;
-      configApp: (app: Application) => Promise<void> | void;
-    })
-  | (ServiceMetadata & { protocol: CommunicationProtocol.REDIS_QUEUE });
+export type HttpServiceConfig = ServiceMetadata & {
+  protocol: CommunicationProtocol.HTTP;
+  configApp: (app: Application) => Promise<void> | void;
+};
+
+export type RedisQueueServiceConfig = ServiceMetadata & {
+  protocol: CommunicationProtocol.REDIS_QUEUE;
+};
+
+export type ServiceConfig = HttpServiceConfig | RedisQueueServiceConfig;
