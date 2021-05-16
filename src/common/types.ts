@@ -24,6 +24,7 @@ export type HttpServiceConfig = ServiceMetadata & {
 
 export type RedisQueueServiceConfig = ServiceMetadata & {
   protocol: CommunicationProtocol.REDIS_QUEUE;
+  onMessageReceived: (msg: { event: string; payload: object }) => Promise<any>;
 };
 
 export type ServiceConfig = HttpServiceConfig | RedisQueueServiceConfig;

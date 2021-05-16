@@ -4,15 +4,24 @@ import { promisify } from "util";
 import { CommunicationProtocol, ServiceMetadata } from "../common/types";
 import { request } from "http";
 import logger from "../common/logger";
+import { RedisQueue } from "../common/redis-queue";
 
 export class Gateway {
-  constructor(private redisClient: RedisClient) {}
+  private redisQueue: RedisQueue;
+
+  constructor(private redisClient: RedisClient) {
+    this.redisQueue = new RedisQueue(redisClient);
+  }
 
   private async sendToService(
     req: Request,
     res: Response,
     serviceMetadata: ServiceMetadata
   ) {
+    logger.info(`Request received for service: '${serviceMetadata.name}'`);
+
+    const path = req.url.replace(`/${serviceMetadata.name}`, "");
+
     switch (serviceMetadata.protocol) {
       case CommunicationProtocol.HTTP: {
         logger.info(
@@ -23,11 +32,11 @@ export class Gateway {
 
         const httpRequest = request(
           {
+            path,
             method: req.method,
             host: serviceMetadata.host,
             port: serviceMetadata.port,
             protocol: "http:",
-            path: req.url.replace(`/${serviceMetadata.name}`, ""),
             headers: req.headers,
           },
           (httpResponse) => {
@@ -37,6 +46,19 @@ export class Gateway {
 
         httpRequest.write(Buffer.from(JSON.stringify(req.body)));
         httpRequest.end();
+      }
+      case CommunicationProtocol.REDIS_QUEUE: {
+        this.redisQueue
+          .sendMessageSync(serviceMetadata.name, {
+            event: path,
+            payload: req.body,
+          })
+          .then((data) => {
+            res.json(data);
+          })
+          .catch(() => {
+            res.status(400).json({ error: "Some error occurred!" });
+          });
       }
     }
   }

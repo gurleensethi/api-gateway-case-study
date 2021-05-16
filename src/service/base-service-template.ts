@@ -9,10 +9,13 @@ export abstract class BaseServiceTemplate<T extends ServiceConfig> {
 
   constructor(private config: T, private redisClient: RedisClient) {
     this.generateServiceMetadataForRedis();
-    this.initService(config);
+    this.initService(config, redisClient);
   }
 
-  public abstract initService(config: T): Promise<void> | void;
+  public abstract initService(
+    config: T,
+    redisClient: RedisClient
+  ): Promise<void> | void;
 
   private generateServiceMetadataForRedis() {
     this.redisServiceMetadata = Object.keys(this.config).reduce<string[]>(

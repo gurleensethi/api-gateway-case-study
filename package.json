@@ -6,8 +6,10 @@
   "scripts": {
     "start:gateway": "node dist/gateway/index.js",
     "start:hello-service": "node dist/service/implementations/hello-service.js",
+    "start:bitcoin-service": "node dist/service/implementations/bitcoin-service.js",
     "dev:gateway": "tsc-watch --onSuccess 'npm run start:gateway'",
     "dev:hello-service": "tsc-watch --onSuccess 'npm run start:hello-service'",
+    "dev:bitcoin-service": "tsc-watch --onSuccess 'npm run start:bitcoin-service'",
     "build": "tsc"
   },
   "author": "",
@@ -20,10 +22,12 @@
     "express": "^4.17.1",
     "redis": "^3.1.2",
     "typescript": "^4.2.4",
+    "uuid": "^8.3.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/node": "^15.0.3",
+    "@types/uuid": "^8.3.0",
     "tsc-watch": "^4.2.9"
   }
 }
