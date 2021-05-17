@@ -39,7 +39,7 @@ Protocols used for routing (from gateway to service) in this case study:
 
 - **queues**: Gateway receives an http request, it then converts the http request to a payload and sends it to the queue that is sepcified by the service, the gateway also listens for response from the service on a different queue and replies to the client by converting the response to http response. For this project I have a hacky implementation of queues using redis.
 
-![gateway_queue](https://raw.githubusercontent.com/gurleensethi/api-gateway-case-study/main/images/gateway_queue.png)
+![gateway_queue_conversion](https://raw.githubusercontent.com/gurleensethi/api-gateway-case-study/main/images/gateway_queue_conversion.png)
 
 ## Heartbeat
 
