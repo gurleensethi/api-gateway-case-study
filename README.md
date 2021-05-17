@@ -25,7 +25,7 @@ There is no hard and fast rule for the features that an API Gateway should suppo
 
 - [`Heartbeat`](#heartbeat): Services have a hearbeat mechanism to denote if they are still available.
 
-- `Dynamic Service Registration`: Services can register themselves dynamically without the need of restarting gateway server itself.
+- [`Dynamic Service Registration`](#dynamic-service-registration): Services can register themselves dynamically without the need of restarting gateway server itself.
 
 ## Routing
 
@@ -58,3 +58,58 @@ By doing this, if a service crashes its metadata will expire and be no longer av
 ### Usage by Gateway
 
 Whenever gateway receives a request (for example `/api/service-name/some-path`), it extracts the service name from the url path and checks if corresponding entry exists in redis, if the entry is not found, the service is considered not available.
+
+## Dynamic Service Registration
+
+Since gateway checks for exitance of a service on runtime of each request, it allows us to dynamically swapn services without requiring the gateway to change. To get itself registered all a service has to do is make an entry in `redis` with its name and communication protocol.
+
+Exmaple:
+
+```
+hset name hello-service protocol http port 4000 host localhost
+```
+
+The above command registers a service with name `hello-service` that comunicates over `http` and listens on port `4000`. Whenever a request is sent to gateway for hello-service (`/api/hello-service`), gateway will check for the above entry in redis and foward the request to the service based on the communication protocol.
+
+## Setup and Running the Project
+
+- Run `redis`
+
+```
+docker-compose -f docker/docker-compose.dev.yaml up -d
+```
+
+- Install Dependencies
+
+```
+npm install
+```
+
+- Run `Gateway`
+
+```
+npm run dev:gateway
+```
+
+- Run the `services`
+
+```
+npm run dev:hello-service
+
+# Run the follwing in a different terminal
+npm run dev:bitcoin-service
+```
+
+## Access the services
+
+`hello-service`
+
+```
+curl localhost:3000/api/hello-service
+```
+
+`bitcoin-service`
+
+```
+curl localhost:3000/api/bitcoin-service
+```
